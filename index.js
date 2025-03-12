@@ -1,33 +1,30 @@
 import mongoose from "mongoose";
-import {PORT, mongoDBURL} from './config.js'
-import express from 'express'
+import { mongoDBURL } from './config.js';
+import express from 'express';
 import router from "./route/BookRoute.js";
-import cors from 'cors'
+import cors from 'cors';
 
 const app = express();
 
-app.get('/', (req,res) => {
-    res.status(200).send("<h1>Welcome to MERN stack</h1>")
-})
+// Default to 5555 if process.env.PORT is not set
+const PORT = process.env.PORT || 5555;
 
-app.use(cors())
+app.get('/', (req, res) => {
+    res.status(200).send("<h1>Welcome to MERN stack</h1>");
+});
 
-// app.use(cors({
-//     origin: '*',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type']
-// }))
+app.use(cors());
 
-app.use(express.json())
+app.use(express.json());
 
-app.use('/app/books/' , router)
+app.use('/app/books/', router);
 
 mongoose.connect(mongoDBURL)
-        .then(() => {
-            app.listen(PORT, () => {
-                console.log(`Running at ${PORT}`)
-            })
-        })
-        .catch((e) => {
-            console.log(e.message);
-        })
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch((e) => {
+        console.log(e.message);
+    });
